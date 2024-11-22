@@ -1,0 +1,7 @@
+/data
+/build
+/oncotum.egg-info
+*.nii.gz
+*.xml
+*.iml
+.idea
