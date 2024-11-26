@@ -1120,7 +1120,6 @@ def save_metrics(epoch:int, metrics:list, swa:bool, writer, current_epoch:int, t
     """
     metrics = list(zip(*metrics))
     # print(metrics)
-    # TODO check if doing it directly to numpy work
     metrics = [torch.tensor(dice, device="cpu").numpy() for dice in metrics]
     # print(metrics)
     labels = ("ET", "TC", "WT")
