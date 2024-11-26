@@ -590,6 +590,18 @@ def mkdir_if_not_exist(directory: str) -> str:
     return directory
 
 
+def set_out_dir(parent: str, child: str) -> str:
+    """
+    checks if parent path has separator at end and merges the paths.
+
+    :param parent: String of parent directory
+    :param child: String of child directory
+    :return: String of combined path
+    """
+    if not parent.endswith(os.sep):
+        parent = parent + os.sep
+    return parent + child
+
 def image2array(image_dir:str) -> tuple[Any, Any, Any]:
     """
     Takes a directory of an image and gives a numpy array.

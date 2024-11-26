@@ -66,7 +66,6 @@ class TumorSegmentation:
         if not work_dir.endswith(os.sep):
             work_dir = work_dir + os.sep
         self.work_dir = work_dir
-        self.out_dir = work_dir + TUMOR_SEGMENTATION_PATH
         # general
         self.mri = MRI()
         self.model_param = ModelParam()
@@ -430,6 +429,7 @@ class TumorSegmentation:
         """
         Checks if full structural modality mode and takes best model depending on respective input parameters.
         """
+        out_dir = set_out_dir(self.work_dir, TUMOR_SEGMENTATION_PATH)
         channel = [self.mri.t1_dir, self.mri.t1ce_dir, self.mri.t2_dir, self.mri.flair_dir]
         if self.config == None and self.mri.full_ana_modality:
             self.config = self.weights[0][1]
@@ -452,7 +452,7 @@ class TumorSegmentation:
         crops_idx = None
         os.environ['CUDA_VISIBLE_DEVICES'] = self.devices
 
-        save_folder = pathlib.Path(self.out_dir)
+        save_folder = pathlib.Path(out_dir)
         save_folder.mkdir(parents=True, exist_ok=True)
 
         config_file = pathlib.Path(self.config).resolve()
@@ -544,7 +544,7 @@ class TumorSegmentation:
 
             ref_img = sitk.ReadImage(ref_img_path)
             labelmap.CopyInformation(ref_img)
-            output_segmentation = str(self.out_dir) + str(patient_id) + ".nii.gz"
+            output_segmentation = str(out_dir) + str(patient_id) + ".nii.gz"
             print("Writing " + output_segmentation)
             sitk.WriteImage(labelmap, output_segmentation)
             self.mri.seg_dir = output_segmentation
