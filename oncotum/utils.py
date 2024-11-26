@@ -49,6 +49,8 @@ Functions:
     count_parameters:               Count trainable parameters of neural network
     save_metrics:                   Saves the metrics into the respective folder.
 """
+from .models import DataAugmenter
+
 import pprint
 import random
 from typing import Any, Union
@@ -72,7 +74,6 @@ from itertools import combinations, product
 import nibabel as nib
 import copy
 import time
-from .models import DataAugmenter
 
 ONCOTUM_DIR = os.environ['ONCOTUM']
 FULL_MODEL_DIR = ONCOTUM_DIR + "/data/tumor_segmentation/full/hyperparam.yaml"

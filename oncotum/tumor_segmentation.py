@@ -10,7 +10,6 @@ classes:
 """
 from .utils import *
 from . import models
-from .models import get_norm_layer
 
 import pprint
 import shutil
@@ -125,7 +124,7 @@ class TumorSegmentation:
 
         model = model_maker(self.model_param.input_channel, self.model_param.output_channel,
             width=self.model_param.width, deep_supervision=self.model_param.deep_sup,
-            norm_layer=get_norm_layer(self.model_param.norm_layer), dropout=self.model_param.dropout)
+            norm_layer=models.get_norm_layer(self.model_param.norm_layer), dropout=self.model_param.dropout)
 
         print("total number of trainable parameters " + str(count_parameters(model)))
 
@@ -133,7 +132,7 @@ class TumorSegmentation:
             # Create the average model
             swa_model = model_maker(self.model_param.input_channel, self.model_param.output_channel,
                 width=self.model_param.width, deep_supervision=self.model_param.deep_sup,
-                norm_layer=get_norm_layer(self.model_param.norm_layer))
+                norm_layer=models.get_norm_layer(self.model_param.norm_layer))
             for param in swa_model.parameters():
                 param.detach_()
             swa_model = swa_model.cuda()
@@ -467,7 +466,7 @@ class TumorSegmentation:
         model_maker = self.dict_models[args.arch]
         input_channel = len(args.input_patterns)
         model = model_maker(input_channel, 3, width=args.width, deep_supervision=args.deep_sup,
-            norm_layer=get_norm_layer(args.norm_layer), dropout=args.dropout)
+            norm_layer=models.get_norm_layer(args.norm_layer), dropout=args.dropout)
 
         reload_ckpt_bis(str(args.ckpt), model)
 
