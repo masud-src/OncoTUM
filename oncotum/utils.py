@@ -56,7 +56,7 @@ import random
 from typing import Any, Union
 from matplotlib import pyplot as plt
 from numpy import logical_and as l_and, logical_not as l_not
-from random import randint, random, sample, uniform
+from random import randint, random, sample
 from scipy.spatial.distance import directed_hausdorff
 from torch import distributed as dist
 import torch.nn.functional as F
@@ -78,9 +78,9 @@ import time
 ONCOTUM_DIR = os.environ['ONCOTUM']
 FULL_MODEL_DIR = ONCOTUM_DIR + "/data/tumor_segmentation/full/hyperparam.yaml"
 CYCLE_1_4_MODEL_T1_DIR = ONCOTUM_DIR + "/data/tumor_segmentation/t1/hyperparam.yaml"
-CYCLE_1_4_MODEL_T1GD_DIR = ONCOTUM_DIR +  "/data/tumor_segmentation/t1gd/hyperparam.yaml"
-CYCLE_1_4_MODEL_T2_DIR = ONCOTUM_DIR +  "/data/tumor_segmentation/t2/hyperparam.yaml"
-CYCLE_1_4_MODEL_FLAIR_DIR = ONCOTUM_DIR +  "/data/tumor_segmentation/flair/hyperparam.yaml"
+CYCLE_1_4_MODEL_T1GD_DIR = ONCOTUM_DIR + "/data/tumor_segmentation/t1gd/hyperparam.yaml"
+CYCLE_1_4_MODEL_T2_DIR = ONCOTUM_DIR + "/data/tumor_segmentation/t2/hyperparam.yaml"
+CYCLE_1_4_MODEL_FLAIR_DIR = ONCOTUM_DIR + "/data/tumor_segmentation/flair/hyperparam.yaml"
 TUMOR_SEGMENTATION_WEIGHTS_DIR = [("FULL_MODEL_DIR", FULL_MODEL_DIR),
                                   ("CYCLE_1_4_MODEL_T1_DIR", CYCLE_1_4_MODEL_T1_DIR),
                                   ("CYCLE_1_4_MODEL_T1GD_DIR", CYCLE_1_4_MODEL_T1GD_DIR),
@@ -95,7 +95,6 @@ SENS = "sens"
 SPEC = "spec"
 METRICS = [HAUSSDORFF, DICE, SENS, SPEC]
 
-
 trs = list(combinations(range(2, 5), 2)) + [None]
 flips = list(range(2, 5)) + [None]
 rots = list(range(1, 4)) + [None]
@@ -104,7 +103,8 @@ transform_list = list(product(flips, rots))
 
 class Ranger(Optimizer):
 
-    def __init__(self, params, lr=1e-3, alpha=0.5, k=6, N_sma_threshhold=5, betas=(.9, 0.999), eps=1e-8, weight_decay=0):
+    def __init__(self, params, lr=1e-3, alpha=0.5, k=6, N_sma_threshhold=5, betas=(.9, 0.999), eps=1e-8,
+                 weight_decay=0):
         # parameter checks
         if not 0.0 <= alpha <= 1.0:
             raise ValueError(f'Invalid slow update rate: {alpha}')
@@ -146,7 +146,8 @@ class Ranger(Optimizer):
 
     def step(self, closure=None):
         loss = None
-        # note - below is commented out b/c I have other work that passes back the loss as a float, and thus not a callable closure.
+        # note - below is commented out b/c I have other work that passes back the loss as a float, and thus not a
+        # callable closure.
         # Uncomment if you need to use the actual closure...
 
         # if closure is not None:
@@ -190,7 +191,9 @@ class Ranger(Optimizer):
                     N_sma = N_sma_max - 2 * state['step'] * beta2_t / (1 - beta2_t)
                     buffered[1] = N_sma
                     if N_sma > self.N_sma_threshhold:
-                        step_size = group['lr'] * math.sqrt((1 - beta2_t) * (N_sma - 4) / (N_sma_max - 4) * (N_sma - 2) / N_sma * N_sma_max / (N_sma_max - 2)) / (1 - beta1 ** state['step'])
+                        step_size = group['lr'] * math.sqrt(
+                            (1 - beta2_t) * (N_sma - 4) / (N_sma_max - 4) * (N_sma - 2) / N_sma * N_sma_max / (
+                                        N_sma_max - 2)) / (1 - beta1 ** state['step'])
                     else:
                         step_size = group['lr'] / (1 - beta1 ** state['step'])
                     buffered[2] = step_size
@@ -283,6 +286,7 @@ class ProgressMeter(object):
     """
     Computes and stores the progress.
     """
+
     def __init__(self, num_batches, meters, prefix=""):
         self.batch_fmtstr = self._get_batch_fmtstr(num_batches)
         self.meters = meters
@@ -305,7 +309,8 @@ class Brats(torch.utils.data.dataset.Dataset):
     Creates one or multiple datasets in the BraTS declaration. One Patient can have all or a subset of the standard
     modalities.
     """
-    def __init__(self, data, patterns:list[str], rand_blank:bool, benchmarking=False,
+
+    def __init__(self, data, patterns: list[str], rand_blank: bool, benchmarking=False,
                  training=True, debug=False, data_aug=False, no_seg=False, normalisation="minmax"):
         super(Brats, self).__init__()
         self.benchmarking = benchmarking
@@ -476,6 +481,7 @@ class MRI:
         set_affine_and_shape:   Loads first given measurement and takes affine and shape
         isFullModality:         Checks if input state has full structural modality
     """
+
     def __init__(self):
         self.work_dir = None
         self.subj_id = None
@@ -505,7 +511,7 @@ class MRI:
         except:
             print("no nifti image, need to set affine after conversion.")
 
-    def isFullModality(self) -> bool:
+    def is_full_modality(self) -> bool:
         """
         Checks if all structural gold standard entities are available. Returns boolean value and sets
         self.full_ana_modality
@@ -553,6 +559,7 @@ class ModelParam:
         workers:                                Int, number of working processes
         resume:                                 Bool, for resuming the training of a model (not tested)
     """
+
     def __init__(self):
         self.arch = "EquiUnet"
         self.training_data = None
@@ -584,7 +591,7 @@ def mkdir_if_not_exist(directory: str) -> str:
     """
     Makes directory if not exists and returns the string
 
-    :param dir: String of directory
+    :param directory: String of directory
     """
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -603,7 +610,8 @@ def set_out_dir(parent: str, child: str) -> str:
         parent = parent + os.sep
     return parent + child
 
-def image2array(image_dir:str) -> tuple[Any, Any, Any]:
+
+def image2array(image_dir: str) -> tuple[Any, Any, Any]:
     """
     Takes a directory of an image and gives a numpy array.
 
@@ -616,7 +624,7 @@ def image2array(image_dir:str) -> tuple[Any, Any, Any]:
     return copy.deepcopy(orig_image.get_fdata()), orig_image.shape, orig_image.affine
 
 
-def image2mask(image_dir:str, compartment:int=None, inner_compartments:list[int]=None) -> np.ndarray:
+def image2mask(image_dir: str, compartment: int = None, inner_compartments: list[int] = None) -> np.ndarray:
     """
     Gives deep copy of original image with selected compartments.
 
@@ -693,7 +701,7 @@ def revert_tta_factory(flip, rot):
         raise
 
 
-def get_datasets(folder: str, patterns:list[str], seed:int, debug:bool, rand_blank=False, no_seg=False, full=False,
+def get_datasets(folder: str, patterns: list[str], seed: int, debug: bool, rand_blank=False, no_seg=False, full=False,
                  fold_number=0, normalisation="minmax") -> Union[tuple[Brats, Brats], tuple[Brats, Brats, Brats]]:
     """
     Get the training data set from the given folder. For adaptive training mode the wanted patterns and a randomised
@@ -718,12 +726,14 @@ def get_datasets(folder: str, patterns:list[str], seed:int, debug:bool, rand_bla
     assert base_folder.exists()
     patients_dir = sorted([x for x in base_folder.iterdir() if x.is_dir()])
     if full:
-        train_dataset = Brats(patients_dir, patterns, rand_blank, training=True, debug=debug, normalisation=normalisation)
+        train_dataset = Brats(patients_dir, patterns, rand_blank, training=True, debug=debug,
+                              normalisation=normalisation)
         bench_dataset = Brats(patients_dir, patterns, rand_blank, training=False, benchmarking=True, debug=debug,
                               normalisation=normalisation)
         return train_dataset, bench_dataset
     if no_seg:
-        return Brats(patients_dir, patterns, rand_blank, training=False, debug=debug, no_seg=no_seg, normalisation=normalisation)
+        return Brats(patients_dir, patterns, rand_blank, training=False, debug=debug, no_seg=no_seg,
+                     normalisation=normalisation)
     kfold = KFold(5, shuffle=True, random_state=seed)
     splits = list(kfold.split(patients_dir))
     train_idx, val_idx = splits[fold_number]
@@ -732,9 +742,11 @@ def get_datasets(folder: str, patterns:list[str], seed:int, debug:bool, rand_bla
     train = [patients_dir[i] for i in train_idx]
     val = [patients_dir[i] for i in val_idx]
     # return patients_dir
-    train_dataset = Brats(train, patterns, rand_blank, training=True,  debug=debug, normalisation=normalisation)
-    val_dataset = Brats(val, patterns, rand_blank, training=False, data_aug=False,  debug=debug, normalisation=normalisation)
-    bench_dataset = Brats(val, patterns, rand_blank, training=False, benchmarking=True, debug=debug, normalisation=normalisation)
+    train_dataset = Brats(train, patterns, rand_blank, training=True, debug=debug, normalisation=normalisation)
+    val_dataset = Brats(val, patterns, rand_blank, training=False, data_aug=False, debug=debug,
+                        normalisation=normalisation)
+    bench_dataset = Brats(val, patterns, rand_blank, training=False, benchmarking=True, debug=debug,
+                          normalisation=normalisation)
     return train_dataset, val_dataset, bench_dataset
 
 
@@ -884,7 +896,7 @@ def pad_batch_to_max_shape(batch):
     """
     Pads a batch to the maximum possible shape.
     """
-    shapes = (sample['label'].shape for sample in batch)
+    shapes = (s['label'].shape for s in batch)
     _, z_sizes, y_sizes, x_sizes = list(zip(*shapes))
     maxs = [int(max(z_sizes)), int(max(y_sizes)), int(max(x_sizes))]
     for i, max_ in enumerate(maxs):
@@ -899,7 +911,8 @@ def pad_batch_to_max_shape(batch):
         assert all(pad >= 0 for pad in (zpad, ypad, xpad)), "Negative padding value error !!"
         # free data augmentation
         left_zpad, left_ypad, left_xpad = [randint(0, pad) for pad in (zpad, ypad, xpad)]
-        right_zpad, right_ypad, right_xpad = [pad - left_pad for pad, left_pad in zip((zpad, ypad, xpad), (left_zpad, left_ypad, left_xpad))]
+        zipped_pad = zip((zpad, ypad, xpad), (left_zpad, left_ypad, left_xpad))
+        right_zpad, right_ypad, right_xpad = [pad - left_pad for pad, left_pad in zipped_pad]
         pads = (left_xpad, right_xpad, left_ypad, right_ypad, left_zpad, right_zpad)
         elem['image'], elem['label'] = F.pad(elem['image'], pads), F.pad(elem['label'], pads)
     return batch
@@ -1038,7 +1051,6 @@ def remove_unwanted_background(image, threshold=1e-5):
     """
     Use to crop zero_value pixel from MRI image.
     """
-    dim = len(image.shape)
     non_zero_idx = np.nonzero(image > threshold)
     min_idx = [np.min(idx) for idx in non_zero_idx]
     # +1 because slicing is like range: not inclusive!!
@@ -1086,7 +1098,7 @@ def random_crop3d(*images, min_perc=0.5, max_perc=1.) -> list:
     return random_crop2d(min_perc, max_perc, *images)
 
 
-def randomise_blanks(rand:bool, paths:list[str]) -> list[str]:
+def randomise_blanks(rand: bool, paths: list[str]) -> list[str]:
     """
     Changes randomly in the list of mri modality paths, one or more modality into a blank image for training of adaptive
     model.
@@ -1114,7 +1126,8 @@ def count_parameters(model) -> int:
     return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
 
-def save_metrics(epoch:int, metrics:list, swa:bool, writer, current_epoch:int, teacher=False, save_folder=None) -> None:
+def save_metrics(epoch: int, metrics: list, swa: bool, writer, current_epoch: int, teacher=False,
+                 save_folder=None) -> None:
     """
     Saves the metrics into the respective folder.
     """
@@ -1168,7 +1181,7 @@ def step(data_loader, model, criterion: EDiceLoss, metric, deep_supervision, opt
     mode = "train" if model.training else "val"
     batch_per_epoch = len(data_loader)
     progress = ProgressMeter(batch_per_epoch, [batch_time, data_time, losses],
-        prefix=str(mode) + "Epoch: [" + str(epoch) + "]")
+                             prefix=str(mode) + "Epoch: [" + str(epoch) + "]")
 
     end = time.perf_counter()
     metrics = []
@@ -1178,7 +1191,6 @@ def step(data_loader, model, criterion: EDiceLoss, metric, deep_supervision, opt
         data_aug = DataAugmenter(p=0.8, noise_only=False, channel_shuffling=False, drop_channnel=True).cuda()
     else:
         data_aug = DataAugmenter(p=0.8, noise_only=False, channel_shuffling=False, drop_channnel=True).cpu()
-
 
     for i, batch in enumerate(data_loader):
         # measure data loading time
@@ -1240,7 +1252,7 @@ def step(data_loader, model, criterion: EDiceLoss, metric, deep_supervision, opt
                 if patients_perf is not None:
                     patients_perf.append(dict(id=patient_id[0], epoch=epoch, split=mode, loss=loss_.item()))
 
-                writer.add_scalar(f"Loss/{mode}{'_swa' if swa else ''}",loss_.item(),
+                writer.add_scalar(f"Loss/{mode}{'_swa' if swa else ''}", loss_.item(),
                                   global_step=batch_per_epoch * epoch + i)
 
                 # measure accuracy and record loss_
@@ -1286,4 +1298,3 @@ def step(data_loader, model, criterion: EDiceLoss, metric, deep_supervision, opt
         writer.add_scalar(f"SummaryLoss/val", losses.avg, epoch)
 
     return losses.avg
-
