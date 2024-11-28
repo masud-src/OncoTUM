@@ -1,8 +1,9 @@
 import subprocess
-from typing import Union
+from collections import defaultdict
+from typing import List, Tuple, Union
 
 
-def is_package_installed(env_name, package_name) -> Union[str, bool]:
+def is_package_installed(env_name: str, package_name: str) -> Union[str, bool]:
     """Check if a package is installed in a given conda environment."""
     try:
         command = ["conda", "list", "-n", env_name, package_name]
@@ -12,60 +13,52 @@ def is_package_installed(env_name, package_name) -> Union[str, bool]:
         return False
 
 
-def add_packages_to_env(env_name, packages_with_channels) -> None:
-    """Add packages to an existing environment with specified channels if not already installed."""
-    for package, channel in packages_with_channels:
-        if not is_package_installed(env_name, package):
-            try:
-                if channel == "pip":
-                    print(f"Installing {package} via pip in environment '{env_name}'...")
-                    subprocess.run(
-                        ["pip", "install", package],
-                        check=True,
-                        env={"CONDA_DEFAULT_ENV": env_name}  # Ensure pip installs in the correct Conda env
-                    )
-                else:
-                    print(f"Installing {package} from {channel} in environment '{env_name}'...")
-                    subprocess.run(
-                        ["conda", "install", "-n", env_name, "-c", channel, "-y", package],
-                        check=True
-                    )
-                print(f"{package} installed successfully.")
-            except subprocess.CalledProcessError:
-                print(f"Failed to install {package} in environment '{env_name}'.")
-        else:
-            print(f"{package} is already installed in '{env_name}'.")
-
-
-
-def create_new_env(env_name, packages_with_channels) -> None:
-    """Create a new isolated environment with specified packages from their respective channels."""
+def install_conda_packages(env_name: str, channel: str, packages: List[str]) -> None:
+    """Install a list of packages from a specific channel."""
     try:
-        # Construct the command for conda packages
-        conda_command = ["conda", "create", "-n", env_name, "-y"]
-        pip_packages = []
+        print(f"Installing packages from channel '{channel}' in environment '{env_name}': {packages}")
+        command = ["conda", "install", "-n", env_name, "-y", "-c", channel] + packages
+        subprocess.run(command, check=True)
+        print(f"Packages installed successfully from '{channel}'.")
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to install packages from channel '{channel}': {e}")
 
-        for package, channel in packages_with_channels:
-            if channel == "pip":
-                pip_packages.append(package)  # Collect pip packages separately
-            else:
-                conda_command.extend(["-c", channel, package])
 
-        # Create the environment with conda packages
-        subprocess.run(conda_command, check=True)
+def install_pip_packages(env_name: str, packages: List[str]) -> None:
+    """Install pip packages in a given conda environment."""
+    try:
+        print(f"Installing pip packages in environment '{env_name}': {packages}")
+        command = ["pip", "install"] + packages
+        subprocess.run(command, check=True, env={"CONDA_DEFAULT_ENV": env_name})
+        print("Pip packages installed successfully.")
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to install pip packages: {e}")
 
-        # Install pip packages in the new environment
-        if pip_packages:
-            print(f"Installing pip packages in '{env_name}'...")
-            for pip_package in pip_packages:
-                subprocess.run(
-                    ["pip", "install", pip_package],
-                    check=True,
-                    env={"CONDA_DEFAULT_ENV": env_name}  # Ensure pip installs in the correct Conda env
-                )
-        print(f"New environment '{env_name}' created with specified packages and channels.")
-    except subprocess.CalledProcessError:
-        print(f"Failed to create new environment '{env_name}'.")
+
+def add_packages_to_env(env_name: str, packages_with_channels: List[Tuple[str, str]]) -> None:
+    """Add packages to an existing environment, grouped by channels."""
+    grouped_packages = defaultdict(list)
+
+    # Group packages by channel
+    for package, channel in packages_with_channels:
+        grouped_packages[channel].append(package)
+
+    for channel, packages in grouped_packages.items():
+        if channel == "pip":
+            install_pip_packages(env_name, packages)
+        else:
+            install_conda_packages(env_name, channel, packages)
+
+
+def create_new_env(env_name: str, packages_with_channels: List[Tuple[str, str]]) -> None:
+    """Create a new conda environment and install packages grouped by channels."""
+    try:
+        print(f"Creating new environment '{env_name}'...")
+        subprocess.run(["conda", "create", "-n", env_name, "-y"], check=True)
+        print(f"Environment '{env_name}' created successfully.")
+        add_packages_to_env(env_name, packages_with_channels)
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to create new environment '{env_name}': {e}")
 
 
 def main():
@@ -73,7 +66,6 @@ def main():
     new_env_name = "oncostr"
 
     # Define each package with its specific channel
-    # Note: For pip packages like Ranger, we set the channel to 'pip'
     packages_with_channels = [
         ("torch>=1.6.0", "conda-forge"),
         ("SimpleITK>=1.2.4", "conda-forge"),
@@ -83,11 +75,12 @@ def main():
         ("PyYAML>=5.3.1", "conda-forge"),
         ("matplotlib>=3.2.1", "conda-forge"),
         ("scipy>=1.4.1", "conda-forge"),
-        ("git+https://github.com/lessw2020/Ranger-Deep-Learning-Optimizer.git", "pip")
+        ("git+https://github.com/lessw2020/Ranger-Deep-Learning-Optimizer.git", "pip"),
     ]
 
     action = input(
-        f"Would you like to (1) add packages to the existing environment '{env_name}' or (2) create a new environment '{new_env_name}'? Enter 1 or 2: ").strip()
+        f"Would you like to (1) add packages to the existing environment '{env_name}' "
+        f"or (2) create a new environment '{new_env_name}'? Enter 1 or 2: ").strip()
 
     if action == '1':
         add_packages_to_env(env_name, packages_with_channels)
