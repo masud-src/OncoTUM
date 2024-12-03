@@ -1,34 +1,40 @@
 # OncoTUM
+
 OncoTUM is a **tum**our segmentation package for medical images that are distorted due its **onco**logical disease. To 
-perform the segmentation processes, the fast algorithm of fsl [1] is used. This algorithm builds on a k-means 
-clustering and compares probability-intensity gaussian functions of the different compartments. To take account of the
-distorted area, two different approaches are presented. For this purpose, a previously created tumour segmentation is 
-used and the identified areas are treated separately. The exact procedure is explained in more detail in Suditsch et 
-al. [2], but some exemplary results are shown in the following.
+perform the segmentation processes, the convolutional network (unet) of T. Henry et al. [1] is adapted. Therefore, the
+code (https://github.com/lescientifik/open_brats2020) is adapted to the framework of OncoFEM. The algorithm is about 
+a modality agnostic mode and cpu mode appended. The results of testet modality agnostic modes are shown in the 
+following.
 
 ## Examplary results
 
-The first image shows the tumor agnostic mode, where the images are simply segmented with fsl's fast algorithm, without
-any preparation.
+In the following the results of the modality agnostic modes are compared to the full modality mode. 
+
+The first image shows the original modalities.
+
+![alt text](tumor_entity_weighted_2.png)
+
+The following image shows the segmentation based only on the t1 image.
 
 ![alt text](tumor_agnostic.png)
 
-The next image shows the *bias corrected* mode. In short, herein the tumour area is cut and and both (healthy and tumor)
-images are segmented with fsl's fast algorithm separately.
+The next image shows the segmentation based on the t1gd image.
 
 ![alt text](bias_corrected.png)
 
-Finally, the last images show the *tumor entity weighted* mode. Herein, the tumour area is again cut from the healthy
-brain tissue and it is taken advantage of the distinct compartments of the tumour. Therefore, it is separated again into
-the particular classes of the tumour segmentation (according to BraTS into edema, active and necrotic core). In this
-areas the gray scale of the image is normalised.
+The next image shows the segmentation based on the t2 image.
 
 ![alt text](tumor_entity_weighted_1.png)
 
-The last image shows the result with a reduced set of input images, where the gold standard set (t1, t1gd, t2, flair) is
-reduced to only the t1 image.
+The next image shows the segmentation based on the flair image.
 
 ![alt text](tumor_entity_weighted_2.png)
+
+The next image shows the segmentation based on the full modality image.
+
+![alt text](tumor_entity_weighted_2.png)
+
+The algorithm is capable  can also take different 
 
 ## Integration in Onco
 OncoTUM is part of **Onco**, a module based umbrella software for numerical simulations of patient-specific cancer 
@@ -55,39 +61,18 @@ following Links:
 
 ## Installation and Machine Requirements
 
-There are two different options the installation can be done. First, is the stand-alone installation, where OncoSTR is
-simply installed in an Anaconda environment. The other way is to install OncoFEM (https://github.com/masud-src/OncoFEM) 
-first and add the missing packets. This installation was tested on a virtual box created with a linux mint 21.2 
-cinnamon, 64 bit system and 8 GB RAM on a local machine (intel cpu i7-9700k with 3.6 GHz, 128 GB RAM).
+There are two different options the installation can be done. First, is the stand-alone installation, where OncoTUM is
+simply installed via pip. The other way is to install OncoFEM (https://github.com/masud-src/OncoFEM) and its anaconda
+environment first and add the missing packages into that. This installation was tested on a virtual box created with a 
+linux mint 21.2 cinnamon, 64 bit system and 8 GB RAM on a local machine (intel cpu i7-9700k with 3.6 GHz, 128 GB RAM).
 
 ### Stand-alone installation
 
 To ensure, the system is ready, it is first updated, upgraded and basic packages are installed via apt.
 ````bash
-sudo apt update
-sudo apt upgrade
-sudo apt install build-essential python3-pip git
-````
-- Anaconda needs to be installed. Go to https://anaconda.org/ and follow the installation instructions.
-- Run the following command to set up an anaconda environment for oncostr by pressing 2 in the system dialog.
-````bash
-git clone https://github.com/masud-src/OncoTUM/
-cd OncoTUM
-python3 create_conda_environment.py
-conda activate oncotum
-````
-- Download the fsl package from https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FslInstallation and install in preferred 
-directory, ensure that oncostr environment is chosen.
-````bash
-python3 fslinstaller.py
-````
-- Finally install oncostr on the local system.
-````bash
-python3 -m pip install .
-````
-- The package can now be used. To test the correct installation, run a python script with the following code line.
-````bash
-import oncostr
+git clone https://github.com/masud-src/OncoSTR/
+cd OncoSTR
+pip install -r requirements.txt
 ````
 
 ### Install on existing OncoFEM environment
@@ -96,20 +81,8 @@ import oncostr
 ````bash
 git clone https://github.com/masud-src/OncoSTR/
 cd OncoSTR
-python3 create_conda_environment.py
 conda activate oncofem
-````
-- Download the fsl package from https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FslInstallation and install in preferred directory, ensure that oncostr environment is chosen.
-````bash
-python3 fslinstaller.py
-````
-- Finally install oncostr on the local system.
-````bash
-python3 -m pip install .
-````
-- The package can now be used. To test the correct installation, run a python script with the following code line.
-````bash
-import oncostr
+pip install -r requirements.txt
 ````
 
 ## Tutorial
@@ -118,9 +91,7 @@ TBD
 
 ## How To
 
-Of course, you can use your own segmentation algorithms and just use other packages of Onco, like OncoFEM. Or you can
-modify the existing algorithms, respectively expand the existing by your own. Therefore, you can fork and ask for pull 
-requests.
+TBD
 
 ## Literature
 
