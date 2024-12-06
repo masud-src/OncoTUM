@@ -123,4 +123,4 @@ for pull requests.
 
 ## About
 
-OncoSTR is written by Marlon Suditsch
+OncoTUM is written by Marlon Suditsch
