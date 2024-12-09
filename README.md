@@ -24,29 +24,30 @@ following.
 
 In the following the results of the modality agnostic modes are compared to the full modality mode. 
 
-The first image shows the original modalities.
-
-![alt text](tumor_entity_weighted_2.png)
-
 The following image shows the segmentation based only on the t1 image.
-
-![alt text](tumor_agnostic.png)
+<p align="center">
+ <img src="t1.png" alt="t1.png" width="800"/>
+</p>
 
 The next image shows the segmentation based on the t1gd image.
-
-![alt text](bias_corrected.png)
+<p align="center">
+ <img src="t1gd.png" alt="t1gd.png" width="800"/>
+</p>
 
 The next image shows the segmentation based on the t2 image.
-
-![alt text](tumor_entity_weighted_1.png)
+<p align="center">
+ <img src="t2.png" alt="t2.png" width="800"/>
+</p>
 
 The next image shows the segmentation based on the flair image.
-
-![alt text](tumor_entity_weighted_2.png)
+<p align="center">
+ <img src="flair.png" alt="flair.png" width="800"/>
+</p>
 
 The next image shows the segmentation based on the full modality image.
-
-![alt text](tumor_entity_weighted_2.png)
+<p align="center">
+ <img src="full.png" alt="full.png" width="800"/>
+</p>
 
 The algorithm is capable to take also just a reduced set of modalities, e.g. (t1, t1gd, flair). 
 
@@ -122,7 +123,15 @@ import oncotum
 
 ## <a id="tutorial"></a> Tutorial
 
-TBD
+There is an tutorial for the umbrella software project provided on DaRUS 
+(https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi:10.18419/darus-3679). You can download and run the
+tutorial_structure_segmentation.py file by run the following lines in your desired directory.
+````bash
+curl --output tutorial.zip https:/darus.uni-stuttgart.de/api/access/dataset/:persistentId/?persistentId=doi:10.18419/darus-3679
+unzip tutorial.zip
+tar -xvzf tutorial.tar.gz
+rm tutorial.tar.gz tutorial.zip
+````
 
 ## <a id="howto"></a> How To
 
