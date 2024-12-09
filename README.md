@@ -94,9 +94,13 @@ pip install -r requirements.txt
 ````bash
 python3 -m pip install .
 ````
-- To use prepared weights download the necessary material
+- To use prepared weights download the necessary material provided on DaRUS 
+(https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi:10.18419/darus-3679).
 ````bash
-
+curl --output tutorial.zip https:/darus.uni-stuttgart.de/api/access/dataset/:persistentId/?persistentId=doi:10.18419/darus-3679
+unzip tutorial.zip
+tar -xvzf tutorial.tar.gz
+rm tutorial.tar.gz tutorial.zip
 ````
 - The package can now be used. To test the correct installation, run a python script with the following code line.
 ````bash
@@ -105,16 +109,20 @@ import oncotum
 
 ### <a id="oncofem"></a> Install on existing OncoFEM environment
 
-- Download this package and activate the oncofem environment. 
+- Download this package, activate the oncofem environment and install via pip. 
 ````bash
 git clone https://github.com/masud-src/OncoTUM/
 cd OncoTUM
 conda activate oncofem
 pip install -r requirements.txt
 ````
-- To use prepared weights download the necessary material
+- To use prepared weights download the necessary material provided on DaRUS 
+(https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi:10.18419/darus-3679).
 ````bash
-
+curl --output tutorial.zip https:/darus.uni-stuttgart.de/api/access/dataset/:persistentId/?persistentId=doi:10.18419/darus-3679
+unzip tutorial.zip
+tar -xvzf tutorial.tar.gz
+rm tutorial.tar.gz tutorial.zip
 ````
 - The package can now be used. To test the correct installation, run a python script with the following code line.
 ````bash
