@@ -1,40 +1,46 @@
 # OncoTUM
 
-OncoTUM is a **tum**our segmentation package for medical images that are distorted due its **onco**logical disease. To 
+OncoTUM is a **tum**our segmentation package for medical images, that are distorted due its **onco**logical disease. To 
 perform the segmentation processes, the convolutional network (unet) of T. Henry et al. [1] is adapted. Therefore, the
-code (https://github.com/lescientifik/open_brats2020) is adapted to the framework of OncoFEM. The algorithm is about 
-a modality agnostic mode and cpu mode appended. The results of testet modality agnostic modes are shown in the 
-following.
+code (https://github.com/lescientifik/open_brats2020) is tailored with this repository to the framework of OncoFEM. 
+Due to that, no fork is done and the algorithm is appended about a modality agnostic mode and cpu mode. Furthermore, the 
+results of tested modality agnostic modes are shown in the following.
 
 ## Examplary results
 
 In the following the results of the modality agnostic modes are compared to the full modality mode. 
 
-The first image shows the original modalities.
-
-![alt text](tumor_entity_weighted_2.png)
-
 The following image shows the segmentation based only on the t1 image.
 
-![alt text](tumor_agnostic.png)
+<p align="center">
+ <img src="t1.png" alt="workflow.png" width="2000"/>
+</p>
 
 The next image shows the segmentation based on the t1gd image.
 
-![alt text](bias_corrected.png)
+<p align="center">
+ <img src="t1gd.png" alt="workflow.png" width="2000"/>
+</p>
 
 The next image shows the segmentation based on the t2 image.
 
-![alt text](tumor_entity_weighted_1.png)
+<p align="center">
+ <img src="t2.png" alt="workflow.png" width="2000"/>
+</p>
 
 The next image shows the segmentation based on the flair image.
 
-![alt text](tumor_entity_weighted_2.png)
+<p align="center">
+ <img src="flair.png" alt="workflow.png" width="2000"/>
+</p>
 
 The next image shows the segmentation based on the full modality image.
 
-![alt text](tumor_entity_weighted_2.png)
+<p align="center">
+ <img src="full.png" alt="workflow.png" width="2000"/>
+</p>
 
-The algorithm is capable  can also take different 
+The algorithm is can also take different sets of the gold standard as input, e.g (t1, t1gd) or (t1, t2, flair).
 
 ## Integration of OncoTUM
 OncoTUM is part of a module based umbrella software for numerical simulations of patient-specific cancer diseases, see 
@@ -49,15 +55,16 @@ current state of development comprises the following modules
 - OncoGEN (https://github.com/masud-src/OncoGEN)
 - OncoTUM (https://github.com/masud-src/OncoTUM)
 - OncoSTR (https://github.com/masud-src/OncoSTR)
-
-![alt text](workflow.png)
+<p align="center">
+ <img src="workflow.png" alt="workflow.png" width="2000"/>
+</p>
  
 ## Software availability
 
 You can either follow the installation instruction below or use the already pre-installed virtual boxes via the 
 following Links:
 
-- Version 1.0:  https://doi.org/10.18419/darus-3720
+- Version 0.1.0:  https://doi.org/10.18419/darus-3720
 
 ## Installation and Machine Requirements
 
@@ -80,7 +87,8 @@ python3 -m pip install .
 ````
 - To use prepared weights download the necessary material
 ````bash
-
+chmod +x set_config.sh.
+./set_config.sh
 ````
 - The package can now be used. To test the correct installation, run a python script with the following code line.
 ````bash

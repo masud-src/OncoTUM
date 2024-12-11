@@ -49,6 +49,8 @@ Functions:
     count_parameters:               Count trainable parameters of neural network
     save_metrics:                   Saves the metrics into the respective folder.
 """
+import configparser
+
 from .models import DataAugmenter
 
 import pprint
@@ -76,18 +78,21 @@ import copy
 import time
 
 ONCOTUM_DIR = os.environ['ONCOTUM']
-FULL_MODEL_DIR = ONCOTUM_DIR + "/data/tumor_segmentation/full/hyperparam.yaml"
-CYCLE_1_4_MODEL_T1_DIR = ONCOTUM_DIR + "/data/tumor_segmentation/t1/hyperparam.yaml"
-CYCLE_1_4_MODEL_T1GD_DIR = ONCOTUM_DIR + "/data/tumor_segmentation/t1gd/hyperparam.yaml"
-CYCLE_1_4_MODEL_T2_DIR = ONCOTUM_DIR + "/data/tumor_segmentation/t2/hyperparam.yaml"
-CYCLE_1_4_MODEL_FLAIR_DIR = ONCOTUM_DIR + "/data/tumor_segmentation/flair/hyperparam.yaml"
-TUMOR_SEGMENTATION_WEIGHTS_DIR = [("FULL_MODEL_DIR", FULL_MODEL_DIR),
-                                  ("CYCLE_1_4_MODEL_T1_DIR", CYCLE_1_4_MODEL_T1_DIR),
-                                  ("CYCLE_1_4_MODEL_T1GD_DIR", CYCLE_1_4_MODEL_T1GD_DIR),
-                                  ("CYCLE_1_4_MODEL_T2_DIR", CYCLE_1_4_MODEL_T2_DIR),
-                                  ("CYCLE_1_4_MODEL_FLAIR_DIR", CYCLE_1_4_MODEL_FLAIR_DIR)]
+config = configparser.ConfigParser()
+config.read(ONCOTUM_DIR + os.sep + "config.ini")
+STUDIES_DIR = config.get("directories", "STUDIES_DIR")
+FULL_MODEL_DIR = config.get("models", "FULL_MODEL_DIR")
+CYCLE_1_4_MODEL_T1_DIR = config.get("models", "FULL_MODEL_DIR")
+CYCLE_1_4_MODEL_T1GD_DIR = config.get("models", "FULL_MODEL_DIR")
+CYCLE_1_4_MODEL_T2_DIR = config.get("models", "FULL_MODEL_DIR")
+CYCLE_1_4_MODEL_FLAIR_DIR = config.get("models", "FULL_MODEL_DIR")
+TUMOR_SEGMENTATION_WEIGHTS_DIR = [("full", FULL_MODEL_DIR),
+                                  ("t1", CYCLE_1_4_MODEL_T1_DIR),
+                                  ("t1gd", CYCLE_1_4_MODEL_T1GD_DIR),
+                                  ("t2", CYCLE_1_4_MODEL_T2_DIR),
+                                  ("flair", CYCLE_1_4_MODEL_FLAIR_DIR)]
+TRAINING_RUN = config.get("directories", "RUN_DIR")
 TUMOR_SEGMENTATION_PATH = "tumor_segmentation/"
-TRAINING_RUN = "/media/marlon/data/run/"
 TRAINING_NULL_IMAGE = "/data/0_im.nii.gz"
 HAUSSDORFF = "haussdorff"
 DICE = "dice"
