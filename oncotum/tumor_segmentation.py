@@ -3,8 +3,6 @@ Definition of tumor segmentation class. This module represents the interface to 
 https://github.com/lescientifik/open_brats2020.
 
 classes:
-    ModelParam:         Helper class to cluster the definition of a model
-
     TumorSegmentation:  Interface class to control the tumor segmentation. Herein, the user can use the inference or
                         training with particular commands.
 """
@@ -32,15 +30,16 @@ class TumorSegmentation:
     The basic code is taken from https://github.com/lescientifik/open_brats2020. In order to fit into the code of
     OncoFEM following methods have been implemented:
 
-    *Attributes*:
+    *Attributes*
+        work_dir:                   String, working path definition
         mri:                        MRI control unit, is used for path definition and to get the necessary images
-        ts_dir:                     String, working path definition
+        model_param:                Class to collect parameters
         devices:                    String, needed to set used gpus
+        debug:                      Bool for debugging mode
         dict_models:                Dictionary of all implemented models, so far only EquiUnet
         seed:                       Int, random seed
         save_model_folder:          String, directory where trained model will be saved
         start_epoch:                Int, Start of training, usually is set to 0
-        resume:                     Bool, set if model is trained after a pause, not tested
         seg_file:                   String, directory to final segmented file
         weights:                    List[str, str] of implemented weights, first entry is name, second is path
         config:                     Configuration file of used model, saved in a yaml file
@@ -48,12 +47,8 @@ class TumorSegmentation:
         tta:                        Perform all transpose/mirror transform possible only once
 
     *Methods*:
-        init_interference:          Initialises interference by chosing best model
         run_training:               runs training of a neural net with specific training parameters.
-        run_segmentation:           runs segmentation or inference of a chosen neural net with a given input
-        set_compartment_masks:      Sets masks for the different tumor compartments, that are identified via a specific
-                                    integer. Edema is 2, Active tumor is 4 and necrotic core is 1.
-        save_compartment_masks:     Save the tumor compartments into separated nifti files.
+        run_inference:              runs segmentation or inference of a chosen neural net with a given input
 
     All other functionalities come from https://github.com/lescientifik/open_brats2020 and are simply adapted to the
     coding style of Onco.
@@ -88,6 +83,8 @@ class TumorSegmentation:
     def run_training(self) -> None:
         """
         The main training function. Only works for single node (be it single or multi-GPU)
+
+        :return: None
         """
         scheduler = None
         val_loader = None
@@ -427,6 +424,8 @@ class TumorSegmentation:
     def run_inference(self) -> None:
         """
         Checks if full structural modality mode and takes best model depending on respective input parameters.
+
+        :return: None
         """
         out_dir = set_out_dir(self.work_dir, TUMOR_SEGMENTATION_PATH)
         channel = [self.mri.t1_dir, self.mri.t1ce_dir, self.mri.t2_dir, self.mri.flair_dir]
