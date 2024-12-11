@@ -11,8 +11,6 @@ results of tested modality agnostic modes are shown in the following.
 * [Integration of OncoTUM](#integration)
 * [Software availability](#software)
 * [Installation and machine requirements](#installation)
-    * [Stand-alone installation](#standalone)
-    * [Install in existing OncoFEM environment](#oncofem)
 * [Tutorial](#tutorial)
 * [How to](#howto)
 * [Known bugs](#bugs)
@@ -81,25 +79,25 @@ following Links:
 
 ## <a id="installation"></a> Installation and Machine Requirements
 
-There are two different options the installation can be done. First, is the stand-alone installation, where OncoTUM is
-simply installed via pip. The other way is to install OncoFEM (https://github.com/masud-src/OncoFEM) and its anaconda
-environment first and add the missing packages into that. This installation was tested on a virtual box created with a 
-linux mint 21.2 cinnamon, 64 bit system and 8 GB RAM on a local machine (intel cpu i7-9700k with 3.6 GHz, 128 GB RAM).
-
-### <a id="standalone"></a> Stand-alone installation
-
-- Perform the following line in your preferred environment
+This installation was tested on a virtual box created with a linux mint 21.2 cinnamon, 64 bit system and 8 GB RAM on a 
+local machine (intel cpu i7-9700k with 3.6 GHz, 128 GB RAM). It is possible to install OncoTUM as a stand-alone or 
+together with OncoFEM (https://github.com/masud-src/OncoFEM) and its anaconda environment. To do so activate that first
+````bash
+conda activate oncofem
+````
+- Continue with the following lines either in that environment or global
 ````bash
 git clone https://github.com/masud-src/OncoTUM/
 cd OncoTUM
 pip install -r requirements.txt
 ````
-- Install oncotum on the local system with
+- OncoTUM is installed on the local system with
 ````bash
 python3 -m pip install .
 ````
 - To use prepared weights download the necessary material provided on DaRUS 
-(https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi:10.18419/darus-3679).
+(https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi:10.18419/darus-3679). This will also set path variables
+and you should restart the terminal
 ````bash
 chmod +x set_config.sh.
 ./set_config.sh
@@ -109,37 +107,29 @@ chmod +x set_config.sh.
 import oncotum
 ````
 
-### <a id="oncofem"></a> Install on existing OncoFEM environment
-
-- Download this package, activate the oncofem environment and install via pip. 
-````bash
-git clone https://github.com/masud-src/OncoTUM/
-cd OncoTUM
-conda activate oncofem
-pip install -r requirements.txt
-````
-- To use prepared weights download the necessary material provided on DaRUS 
-(https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi:10.18419/darus-3679).
-````bash
-curl --output data.zip https:/darus.uni-stuttgart.de/api/access/dataset/:persistentId/?persistentId=doi:10.18419/darus-3679
-unzip data.zip
-rm data.zip
-````
-- The package can now be used. To test the correct installation, run a python script with the following code line.
-````bash
-import oncotum
-````
-
 ## <a id="tutorial"></a> Tutorial
 
-There is an tutorial for the umbrella software project provided on DaRUS 
+There is a tutorial for the umbrella software project provided on DaRUS 
 (https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi:10.18419/darus-3679). You can download and run the
 tutorial_structure_segmentation.py file by run the following lines in your desired directory.
 ````bash
-curl --output tutorial.zip https:/darus.uni-stuttgart.de/api/access/dataset/:persistentId/?persistentId=doi:10.18419/darus-3679
-unzip tutorial.zip
-tar -xvzf tutorial.tar.gz
-rm tutorial.tar.gz tutorial.zip
+curl --output tutorial https:/darus.uni-stuttgart.de/api/access/dataset/:persistentId/?persistentId=doi:10.18419/darus-3679
+````
+To run this tutorial, you also need to download the first six training datasets from kaggle 
+(https://www.kaggle.com/datasets/awsaf49/brats20-dataset-training-validation). Either you download from the web
+interface and save it in the following location
+````bash
+tutorial/data/BraTS/
+````
+or you use the kaggle API. Be aware that this will download the full set and its recommended to use the web interface
+````bash
+kaggle datasets download -d awsaf49/brats20-dataset-training-validation -p .
+unzip brats20-dataset-training-validation.zip "BraTS20_Training_001/*" "BraTS20_Training_002/*" "BraTS20_Training_003/*" "BraTS20_Training_004/*" "BraTS20_Training_005/*" "BraTS20_Training_006/*" unzip brats20-dataset-training-validation.zip "BraTS20_Training_001/*" "BraTS20_Training_002/*" "BraTS20_Training_003/*" "BraTS20_Training_004/*" "BraTS20_Training_005/*" "BraTS20_Training_006/*" -d ./tutorial/data/BraTS/
+````
+The tutorial can be started with
+````bash
+conda activate oncostr
+python oncostr_tut_01_modes.py
 ````
 
 ## <a id="howto"></a> How To
