@@ -95,8 +95,8 @@ pip install -r requirements.txt
 python3 -m pip install .
 ````
 - To use prepared weights download the necessary material provided on DaRUS 
-(https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi:10.18419/darus-4647). This will also set path variables
-and you should restart the terminal
+(https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi:10.18419/darus-4647) and place the 'data' folder next to
+the oncotum folder. The following script will also set path variables and you should restart the terminal
 ````bash
 chmod +x set_config.sh.
 ./set_config.sh

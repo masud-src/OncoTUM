@@ -56,7 +56,7 @@ if [[ "$OS" == "Windows_NT" ]]; then
 fi
 
 echo "Downloading weights started!"
-curl --output data https://darus.uni-stuttgart.de/api/access/dataset/:persistentId/?persistentId=doi:10.18419/darus-3679
+curl --output data https://darus.uni-stuttgart.de/api/access/dataset/:persistentId/?persistentId=doi:10.18419/darus-4647
 echo "Download weights complete!"
 
 create_config_file
