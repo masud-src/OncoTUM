@@ -128,8 +128,8 @@ unzip brats20-dataset-training-validation.zip "BraTS20_Training_001/*" "BraTS20_
 ````
 The tutorial can be started with
 ````bash
-conda activate oncostr
-python oncostr_tut_01_modes.py
+conda activate oncotum
+python oncotum_tut_01_inference.py
 ````
 
 ## <a id="howto"></a> How To
