@@ -16,7 +16,6 @@ results of tested modality agnostic modes are shown in the following.
 * [Known bugs](#bugs)
 * [How to cite](#howtocite)
 * [Literature](#literature)
-* [About](#about)
 
 ## <a id="results"></a> Examplary results
 
@@ -96,7 +95,7 @@ pip install -r requirements.txt
 python3 -m pip install .
 ````
 - To use prepared weights download the necessary material provided on DaRUS 
-(https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi:10.18419/darus-3679). This will also set path variables
+(https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi:10.18419/darus-4647). This will also set path variables
 and you should restart the terminal
 ````bash
 chmod +x set_config.sh.
@@ -110,7 +109,7 @@ import oncotum
 ## <a id="tutorial"></a> Tutorial
 
 There is a tutorial for the umbrella software project provided on DaRUS 
-(https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi:10.18419/darus-3679). You can download and run the
+(https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi:10.18419/darus-4639). You can download and run the
 tutorial_structure_segmentation.py file by run the following lines in your desired directory.
 ````bash
 curl --output tutorial https:/darus.uni-stuttgart.de/api/access/dataset/:persistentId/?persistentId=doi:10.18419/darus-3679
@@ -151,7 +150,3 @@ TBD
              Networks: A BraTS 2020 Challenge Solution. In: Crimi, A., Bakas, S. (eds) Brainlesion: Glioma, Multiple 
              Sclerosis, Stroke and Traumatic Brain Injuries. BrainLes 2020. Lecture Notes in Computer Science(), 
              vol 12658. Springer, Cham. https://doi.org/10.1007/978-3-030-72084-1_30
-
-## <a id="about"></a> About
-
-OncoTUM is written by Marlon Suditsch
