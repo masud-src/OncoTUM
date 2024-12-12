@@ -3,7 +3,7 @@
 
 OncoTUM is a **tum**our segmentation package for medical images, that are distorted due its **onco**logical disease. To 
 perform the segmentation processes, the convolutional network (unet) of T. Henry et al. [1] is adapted. Therefore, the
-code (https://github.com/lescientifik/open_brats2020) is tailored with this repository to the framework of OncoFEM. 
+code (https://github.com/lescientifik/open_brats2020) is tailored with this repository to the framework of <a href="https://github.com/masud-src/OncoFEM">OncoFEM</a>. 
 Due to that, no fork is done and the algorithm is appended about a modality agnostic mode and cpu mode. Furthermore, the 
 results of tested modality agnostic modes are shown in the following.
 
