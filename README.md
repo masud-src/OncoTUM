@@ -12,7 +12,7 @@ results of tested modality agnostic modes are shown in the following.
 * [Software availability](#software)
 * [Installation and machine requirements](#installation)
 * [Tutorial](#tutorial)
-* [How to](#howto)
+* [How to develop](#howtodevelop)
 * [Known bugs](#bugs)
 * [How to cite](#howtocite)
 * [Literature](#literature)
@@ -125,7 +125,7 @@ python oncotum_tut_01_inference.py
 python oncotum_tut_02_training.py
 ````
 
-## <a id="howto"></a> How To
+## <a id="howtodevelop"></a> How to develop
 
 You can modify the existing algorithms, respectively expand the existing by your own. Therefore, you can fork and ask 
 for pull requests.
