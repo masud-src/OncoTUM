@@ -84,9 +84,7 @@ local machine (intel cpu i7-9700k with 3.6 GHz, 128 GB RAM).
 - a MacBook Pro (Mac14,7) with a Apple M2 Chip (8 cores) and 24 GB memory. The integrated GPU got 10 cores.
 
 It is possible to install OncoTUM as a stand-alone or 
-together with OncoFEM (https://github.com/masud-src/OncoFEM) and its anaconda environment. 
-
-### <a id="short_install"></a> Short installation
+together with OncoFEM (https://github.com/masud-src/OncoFEM) and its anaconda environment.
 
 To install execute the following shell script. First, you may need to make it executable and afterwards you need to 
 restart the terminal to actualise the changes.
