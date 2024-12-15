@@ -11,6 +11,8 @@ results of tested modality agnostic modes are shown in the following.
 * [Integration of OncoTUM](#integration)
 * [Software availability](#software)
 * [Installation and machine requirements](#installation)
+  * [Short installation](#short_install)
+  * [Detailed installation](#detailed_install)
 * [Tutorial](#tutorial)
 * [How to](#howto)
 * [Known bugs](#bugs)
