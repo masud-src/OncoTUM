@@ -107,7 +107,7 @@ There is a tutorial for the umbrella software project provided on DaRUS
 (https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi:10.18419/darus-4639). You can download and run the
 tutorial_structure_segmentation.py file by run the following lines in your desired directory.
 ````bash
-curl --output tutorial https:/darus.uni-stuttgart.de/api/access/dataset/:persistentId/?persistentId=doi:10.18419/darus-3679
+curl --output tutorial https:/darus.uni-stuttgart.de/api/access/dataset/:persistentId/?persistentId=doi:10.18419/darus-4639
 ````
 To run this tutorial, you also need to download the first six training datasets from kaggle 
 (https://www.kaggle.com/datasets/awsaf49/brats20-dataset-training-validation). Either you download from the web
@@ -124,6 +124,7 @@ The tutorial can be started with
 ````bash
 conda activate oncotum
 python oncotum_tut_01_inference.py
+python oncotum_tut_02_training.py
 ````
 
 ## <a id="howto"></a> How To
