@@ -13,8 +13,6 @@ else
   exit 1
 fi
 
-git clone https://github.com/masud-src/OncoTUM/
-cd OncoTUM
 pip install -r requirements.txt
 python3 -m pip install .
 

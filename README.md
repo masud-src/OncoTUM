@@ -93,6 +93,8 @@ together with OncoFEM (https://github.com/masud-src/OncoFEM) and its anaconda en
 To install execute the following shell script. First, you may need to make it executable and afterwards you need to 
 restart the terminal to actualise the changes.
 ````bash
+git clone https://github.com/masud-src/OncoTUM/
+cd OncoTUM
 chmod +x install_oncotum.sh
 ./install_oncotum.sh
 ````
