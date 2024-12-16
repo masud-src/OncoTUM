@@ -5,6 +5,7 @@ echo "Choose the environment: (1) for OncoFEM, (2) for just pip installation"
 read env_choice
 
 if [[ "$env_choice" == "1" ]]; then
+  conda init
   conda activate oncofem
 elif [[ "$env_choice" == "2" ]]; then
   echo "only pip installation is chosen."
@@ -85,7 +86,9 @@ if [[ "$OS" == "Windows_NT" ]]; then
 fi
 
 echo "Downloading weights started!"
-curl --output data https://darus.uni-stuttgart.de/api/access/dataset/:persistentId/?persistentId=doi:10.18419/darus-4647
+curl --output data.zip https://darus.uni-stuttgart.de/api/access/dataset/:persistentId/?persistentId=doi:10.18419/darus-4647
+unzip data.zip -d data
+rm -fr data.zip
 echo "Download weights complete!"
 
 create_config_file
