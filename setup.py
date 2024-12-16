@@ -7,6 +7,7 @@ setup(
     install_requires=[
         "nibabel",
         "numpy",
+        "tensorboard",
     ],
     extras_require={
         "dev": [
