@@ -17,8 +17,6 @@ fi
 pip install -r requirements.txt
 python3 -m pip install .
 
-#!/bin/bash
-
 if [[ -z "${ONCOTUM_DIR}" ]]; then
     ONCOTUM_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 fi
