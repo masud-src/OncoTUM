@@ -494,7 +494,7 @@ class TumorSegmentation:
                 pass
             elif args.normalisation == "minmax":
                 if self.mode == "cpu":
-                    device = "cpu"
+                    device = torch.device("cpu")
                 else:
                     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
                 inputs = inputs_minmax.to(device)
@@ -502,14 +502,14 @@ class TumorSegmentation:
                 crops_idx = crops_idx_minmax
             elif args.normalisation == "zscore":
                 if self.mode == "cpu":
-                    device = "cpu"
+                    device = torch.device("cpu")
                 else:
                     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
                 inputs = inputs_zscore.to(device)
                 pads = pads_zscore
                 crops_idx = crops_idx_zscore
             model.to(device)  # go to gpu
-            if device == "cuda":
+            if device == torch.device("cuda"):
                 device_ = torch.cuda
             else:
                 device_ = torch.cpu
