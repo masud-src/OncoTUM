@@ -35,6 +35,7 @@ class TumorSegmentation:
         mri:                        MRI control unit, is used for path definition and to get the necessary images
         model_param:                Class to collect parameters
         devices:                    String, needed to set used gpus
+        mode:                       String, sets the device to "cpu" or "gpu" mode
         debug:                      Bool for debugging mode
         dict_models:                Dictionary of all implemented models, so far only EquiUnet
         seed:                       Int, random seed
@@ -65,6 +66,7 @@ class TumorSegmentation:
         self.model_param = ModelParam()
 
         self.devices = "0"
+        self.mode = "cpu"
         self.debug = False
         self.dict_models = {"EquiUnet": models.EquiUnet}
 
@@ -491,12 +493,18 @@ class TumorSegmentation:
             if args.normalisation == last_norm:
                 pass
             elif args.normalisation == "minmax":
-                device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+                if self.mode == "cpu":
+                    device = "cpu"
+                else:
+                    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
                 inputs = inputs_minmax.to(device)
                 pads = pads_minmax
                 crops_idx = crops_idx_minmax
             elif args.normalisation == "zscore":
-                device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+                if self.mode == "cpu":
+                    device = "cpu"
+                else:
+                    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
                 inputs = inputs_zscore.to(device)
                 pads = pads_zscore
                 crops_idx = crops_idx_zscore
