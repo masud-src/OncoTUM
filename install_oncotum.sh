@@ -65,11 +65,11 @@ create_config_file(){
         echo "STUDIES_DIR: $USER_HOME/studies/"
         echo "RUN_DIR: $USER_HOME/run/"
         echo "[models]"
-        echo "FULL_MODEL_DIR: $ONCOTUM_DIR/data/tumor_segmentation/full/hyperparam.yaml"
-        echo "CYCLE_1_4_MODEL_T1_DIR: $ONCOTUM_DIR/data/tumor_segmentation/t1/hyperparam.yaml"
-        echo "CYCLE_1_4_MODEL_T1GD_DIR: $ONCOTUM_DIR/data/tumor_segmentation/t1gd/hyperparam.yaml"
-        echo "CYCLE_1_4_MODEL_T2_DIR: $ONCOTUM_DIR/data/tumor_segmentation/t2/hyperparam.yaml"
-        echo "CYCLE_1_4_MODEL_FLAIR_DIR: $ONCOTUM_DIR/data/tumor_segmentation/flair/hyperparam.yaml"
+        echo "FULL_MODEL_DIR: $ONCOTUM_DIR/data/full/hyperparam.yaml"
+        echo "CYCLE_1_4_MODEL_T1_DIR: $ONCOTUM_DIR/data/t1/hyperparam.yaml"
+        echo "CYCLE_1_4_MODEL_T1GD_DIR: $ONCOTUM_DIR/data/t1gd/hyperparam.yaml"
+        echo "CYCLE_1_4_MODEL_T2_DIR: $ONCOTUM_DIR/data/t2/hyperparam.yaml"
+        echo "CYCLE_1_4_MODEL_FLAIR_DIR: $ONCOTUM_DIR/data/flair/hyperparam.yaml"
 
     } > "$CONFIG_FILE"
     echo "Config file created."
@@ -86,7 +86,9 @@ if [[ "$OS" == "Windows_NT" ]]; then
 fi
 
 echo "Downloading weights started!"
-curl --output data https://darus.uni-stuttgart.de/api/access/dataset/:persistentId/?persistentId=doi:10.18419/darus-4647
+curl --output data.zip https://darus.uni-stuttgart.de/api/access/dataset/:persistentId/?persistentId=doi:10.18419/darus-4647
+unzip data.zip
+rm -fr data.zip
 echo "Download weights complete!"
 
 create_config_file
