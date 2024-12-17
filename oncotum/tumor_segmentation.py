@@ -66,7 +66,7 @@ class TumorSegmentation:
         self.model_param = ModelParam()
 
         self.devices = "0"
-        self.mode = "cpu"
+        self.mode = "gpu"
         self.debug = False
         self.dict_models = {"EquiUnet": models.EquiUnet}
 
